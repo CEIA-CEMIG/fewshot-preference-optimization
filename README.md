@@ -1,3 +1,7 @@
+# Few-Shot Preference Optimization (FSPO)
+personaliza modelos de linguagem de grande porte (LLMs) ao reformular o modelamento de recompensa como um problema de *meta-learning*, permitindo adaptação rápida às preferências dos usuários com uma quantidade mínima de dados rotulados, explorando datasets sintéticos para garantir escalabilidade e alcançando altas taxas de sucesso na geração de conteúdo personalizado em múltiplos domínios.
+
+
 Este repositório é um fork do [projeto original](https://github.com/Asap7772/fewshot-preference-optimization). O trabalho original acompanha o artigo
 [FSPO: Few-Shot Preference Optimization of Synthetic Data Elicits LLM Personalization to Real Users](https://www.arxiv.org/abs/2502.19312).
 
