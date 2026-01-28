@@ -1,32 +1,29 @@
-# FSPO: Few-Shot Preference Optimization
+Este repositório é um fork do [projeto original](https://github.com/Asap7772/fewshot-preference-optimization). O trabalho original acompanha o artigo
+[FSPO: Few-Shot Preference Optimization of Synthetic Data Elicits LLM Personalization to Real Users](https://www.arxiv.org/abs/2502.19312).
 
-Code for [FSPO: Few-Shot Preference Optimization of Synthetic Data Elicits LLM Personalization to Real Users](https://www.arxiv.org/abs/2502.19312). 
 
+Este repositório contém código para treinar modelos personalizados usando FSPO (Few-Shot Preference Optimization), construído sobre a base do código de [Direct Preference Optimization (DPO) de Eric Mitchell]((https://github.com/eric-mitchell/direct-preference-optimization)). Como os prompts usados em FSPO tendem a ser longos, o treinamento utiliza Flash Attention para acelerar a execução.
 
-## What is in this repo?
-This repo provides code to train personalized models using FSPO. It is built on top of [Eric Mitchell's DPO codebase](https://github.com/eric-mitchell/direct-preference-optimization). The core modifications are in the `preference_datasets.py` file which contains dataloaders for FSPO. Additionally, due to the increased lengths of prompts with FSPO, we utilize [Flash Attention](https://github.com/Dao-AILab/flash-attention) to speed up training. 
-
-## Setup
-Create a venv with requirements listed in requirements.txt, ideally with python 3.12.
+## Setup do ambiente
+Recomenda-se o uso de Python 3.12.
 ```bash
 conda create --name FSPO python=3.12
 source activate FSPO
 pip install -r requirements.txt
 ```
-Additionally, set the HF_TOKEN and WANDB_API_KEY environment variables.
+Além disso, certifique-se de definir as seguintes variáveis de ambiente: HF_TOKEN e WANDB_API_KEY.
 
-## Running
-To train a model, use the directpreferenceoptimization codebase. We added a dataloader so you can pass in the path to the preference dataset as a dataset. 
+## Treinamento
+Abaixo estão exemplos de comandos adaptados especificamente para o cenário Elix.
+
 ```bash
-python -u train.py model=llama3-2-3b datasets=[roleplay] n_epochs=1 loss=sft lr=1e-7 exp_name=roleplay_prefft trainer=FSDPTrainer sample_during_eval=false eval_every=10000  do_first_eval=false debug=false wandb.project=personalization batch_size=4 max_prompt_length=8192 max_length=8192 eval_batch_size=4
+python -u train.py model=qwen3-4b datasets=[elix] n_epochs=1 loss=sft lr=1e-7 exp_name=elix_ipo trainer=FSDPTrainer sample_during_eval=false eval_every=10000  do_first_eval=false debug=true wandb.project=personalization batch_size=4 max_prompt_length=8192 max_length=8192 eval_batch_size=4
 
-python -u train.py model=llama3-2-3b datasets=[roleplay] n_epochs=1 loss=ipo lr=1e-6 loss.beta=0.01 exp_name=roleplay_ipo trainer=FSDPTrainer sample_during_eval=false eval_every=10000  do_first_eval=false debug=false wandb.project=personalization batch_size=4 max_prompt_length=8192 max_length=8192 eval_batch_size=4 model.archive=/PATH_TO_SFT_OUTPUT/LATEST/policy.pt
+python -u train.py model=qwen3-4b datasets=[elix] n_epochs=1 loss=ipo lr=1e-6 loss.beta=0.01 exp_name=elix_ipo trainer=FSDPTrainer sample_during_eval=false eval_every=10000  do_first_eval=false debug=false wandb.project=personalization batch_size=2 max_prompt_length=8192 max_length=8192 eval_batch_size=2 model.archive=/PATH_TO_SFT_OUTPUT/LATEST/policy.pt
 ```
 ## Data
-Along with this codebase, we also release the following datasets on HuggingFace:
-- [Roleplay](https://huggingface.co/datasets/sher222/persona-iterative-responses)
-- [Review](https://huggingface.co/datasets/Asap7772/steered_reviews_full_autolabel_gpt4o_pref)
-- [Elix](https://huggingface.co/datasets/Asap7772/elix_generations_gpt4omini_pref)
+- [Elix - original](https://huggingface.co/datasets/Asap7772/elix_generations_gpt4omini_pref)
+
 
 ## BibTeX
 ```
