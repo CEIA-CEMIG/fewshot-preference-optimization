@@ -1,0 +1,11 @@
+# torch==2.5.0
+setuptools
+tokenizers==0.20.1
+tqdm
+transformers==4.45.2
+datasets==2.20.0
+hydra-core
+tensor-parallel==1.2.4
+omegaconf==2.3.0
+optuna==3.6.1
+wandb
